@@ -27,8 +27,22 @@ SRR19889574	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR3 | |
 SRR19889575	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR2 | | 
 SRR19889576	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR1 | | 
 
-### Step1 - trim reads
+### Step1 - Adapter trimming
 Raw FASTQ files were preprocessed with Trimmomatic v0.39 (Bolger et al., 2014) to remove Illumina sequencing adapters. 5′ and 3′ ends with a quality score below 5 (Phred+33) were trimmed and reads shorter than 20 bp after trimming were discarded. 
+
+```bash
+for x in *_R1_001.fastq.gz
+do
+trimmomatic PE -threads 16 -phred33 -validatePairs -summary $(basename $x _R1_001.fastq.gz).summary.txt \
+/$(basename $x _R1_001.fastq.gz)_R1_001.fastq.gz \
+/$(basename $x _R1_001.fastq.gz)_R2_001.fastq.gz \
+/trim.$(basename $x _R1_001.fastq.gz)_R1_001.fastq \
+/trim.$(basename $x _R1_001.fastq.gz)_R1_001.U.fastq \
+/trim.$(basename $x _R1_001.fastq.gz)_R2_001.fastq \
+/trim.$(basename $x _R1_001.fastq.gz)_R2_001.U.fastq \
+ILLUMINACLIP:/Trimmomatic-0.39/adapters/TruSeq3-PE-2.fa:2:30:10:2:True LEADING:5 TRAILING:5 MINLEN:20  
+done
+```
 
 ### Step2 - sortMeRNA
 The reads matching sequences of RNA-Seq contaminants were filtered using sortMeRNA (Kopylova et al., 2012), which compares the reads against a custom database of known contaminants, including ribosomal subunits 28S, 18S, 5.8S and 5S, Internal Transcribed Spacer (ITS), Signal recognition particle (SRP), and chloroplast and mitochondrial genomes. The database was compiled as described on our Github (https://github.com/lconcia/RiboScreen/). 
