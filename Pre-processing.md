@@ -38,27 +38,9 @@ The remaining reads were aligned to the Zm-B73-NAM-5.0 reference genome assembly
 
 ### Step4 - deduplication
  Duplicated reads were removed with UMI-Tools v1.1.4 (Smith et al., 2017).
- 
-### Step5
-Read normalization across the genome
-Normalized read density over non-overlapping 50-bp bins was calculated using the normalization reads per genomic content (RPGC) in the utility bamCoverage from the bioinformatics suite deeptools2 v3.5.4 (Ramirez et al., 2016).
 
-### Step6
-Meta-gene profiles of RNA-Seq signal were generated with deeptools2 computeMatrix and plotted with plotProfile.
-
-### Step7 Read counts in annotations
+### Step5 - Read counts in annotations
 Raw read counts over exons were obtained using htseq-counts v. 2.0.3 (Putri et al., 2022) and the NCBI RefSeq v5 Zea mays release 103 gene annotation (https://www.ncbi.nlm.nih.gov/refseq/annotation_euk/Zea_mays/103/). Reads mapping on multiple genes were assigned fractionally to each gene. To determine the distribution of reads among introns, exons, intergenic space and junctions between these three, we ran htseq-counts using a custom annotation file that included annotations of exons, introns and intergenic spaces. We applied the setting "--nonunique none" to report as "junctions" all the reads overlapping with more than one feature, such as adjacent introns and exons. 
 
-### Step8 - Biological replicate reproducibility and differential expression analysis
-Differential expression analysis and principal component analysis were performed with the package DESeq2 v1.40.2 (Love et al., 2014) for the R statistical suite **(RCoreTeam, 2024). All charts were plotted with the R package ggplot2 v3.5.1 (Wickham, 2016). The volcano plots in Figure 5 were drawn with the R package EnhancedVolcano v1.18.0 (Blighe et al., 2024).
+#################
 
-### Step 9  - Saturation analysis
-To determine the saturating sequencing depth in each RNA type, we took a similar approach as **Tarazona et al, (2011). After pooling all the biological replicates of each RNA type, we randomly sub-sampled the reads at increasing depths between 2 million and 75 million reads, and scored the number of genes with at least 5 read counts in each sub-sample. Using the same data, we established, for each RNA type, the number of newly detected genes at each increment of sequencing depth.
-
-### Step10  - TPM and intron/exons - **work in progress
-TPM (transcripts per million) were calculated as in **Wagner et al, 2012.
-For each sample, we divided the number of reads aligned on the exons of each gene by the length of the gene, to obtain the "reads per kilobase" (RPK) of each gene. We then divided the sum of all RPKs by 1,000,000, to have a sample-specific "scaling factor" that accounts for the library size. Finally, we divided the RPKs values by the scaling factor to obtain the TPM of each gene.
-
-### Step11
-Replication timing analysis
-Maize B73 replication timing (Repli-seq) data including G1 and early, mid and late S-phase datasets from sorted nuclei in the mitotic cell cycle of terminal 1-mm root tips (NCBI SRA # PRJNA327875; Wear et al., 2017) were analyzed using the Repliscan application (Zynda et al., 2017; Mickelson-Young et al., 2022)** implemented on the CyVerse Discovery Environment platform (Swetnam et al., 2024). The recommended maize B73 parameters from Mickelson-Young et al. (2024)** were used, except that the full datasets (not downsampled) were mapped to Zm-B73-NAM-5.0 genome assembly (Hufford et al., 2021), and the following minor modifications were made. Read densities were aggregated in 10-kb non-overlapping windows across the genome (--window 10000). Each 10-kb window was assigned a predominant replication time (RT) class using a segmentation threshold of 1.0 (--threshold value, --value 1.0), so that the segmentation algorithm included any window with early, mid or late replication signals that are greater than the G1 reference signal (> ratio of 1.0). 
