@@ -1,5 +1,5 @@
 # Nascent_RNA_manuscript
-Manuscript code repository This repository contains the commands and data related to EU_nuclear RNA published manuscript
+This repository contains the commands and data related to EU_nuclear RNA published manuscript
 
 ### Samples list
 
@@ -22,10 +22,17 @@ https://www.ncbi.nlm.nih.gov/bioproject/PRJNA853797
 
 Accession  | Sample | Fw | Rv
 --- | --- | --- | --- 
-SRR19889573	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR4 | | 
-SRR19889574	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR3 | | 
-SRR19889575	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR2 | | 
-SRR19889576	| Z.mays_B73_Primary+SeminalRoot_0-1mm_steady-state_BR1 | | 
+SRR19889573	| Cellular_BR4 | BR4_Primary_and_seminal_S20_L004_R1_001.fastq.gz | BR4_Primary_and_seminal_S20_L004_R2_001.fastq.gz
+SRR19889574	| Cellular_BR3 | BR3_Primary_and_seminal_S16_L004_R1_001.fastq.gz | BR3_Primary_and_seminal_S16_L004_R2_001.fastq.gz
+SRR19889575	| Cellular_BR2 | BR2_Primary_and_seminal_S8_L004_R1_001.fastq.gz | BR2_Primary_and_seminal_S8_L004_R2_001.fastq.gz
+SRR19889576	| Cellular_BR1 | BR1_Primary_and_seminal_S5_L004_R1_001.fastq.gz | BR1_Primary_and_seminal_S5_L004_R2_001.fastq.gz
+
+Raw data can be retrieved with fasterq-dump (https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump )
+For example:
+
+```bash
+fasterq-dump --split-files SRR24776115
+```
 
 ### Step 1 - Adapter trimming
 Raw FASTQ files were preprocessed with Trimmomatic v0.39 (Bolger et al., 2014) to remove Illumina sequencing adapters. 5′ and 3′ ends with a quality score below 5 (Phred+33) were trimmed and reads shorter than 20 bp after trimming were discarded. 
@@ -101,8 +108,6 @@ done
 ```
 ### Step 5 - Read counts over annotated genes
 Raw read counts over exons were obtained using htseq-counts v. 2.0.3 (Putri et al., 2022) and the NCBI RefSeq v5 Zea mays release 103 gene annotation (https://www.ncbi.nlm.nih.gov/refseq/annotation_euk/Zea_mays/103/). Reads mapping on multiple genes were assigned fractionally to each gene. To determine the distribution of reads among introns, exons, intergenic space and junctions between these three, we ran htseq-counts using a custom annotation file modified to annotations of exons, introns and intergenic spaces. We applied the setting "--nonunique none" to report as "junctions" all the reads overlapping with more than one feature, such as adjacent introns and exons. 
-
-htseq-count -f bam --order=pos --stranded=reverse -a 0 -t exon -i gene --nonunique=fraction --mode=union --counts_output=$SAMPLE.counts.tsv $SAMPLE.deduplicated.bam Zm-B73-REFERENCE-NAM-5.0_genomic.with_scaffolds.GENE.coding+non_coding+pseudo.EXONS.gff
 
 ```bash
 for SAMPLE in *deduplicated.bam
