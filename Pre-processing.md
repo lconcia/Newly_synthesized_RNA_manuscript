@@ -70,7 +70,7 @@ sortmerna --threads 16 --out2 True --zip-out Yes --fastx true --blast '1 cigar q
 done
 ```
 
-### Step3 - reads alignment
+### Step3 - reads alignment and filtering
 The surviving reads were aligned to the Zm-B73-NAM-5.0 reference genome assembly (Hufford et al., 2021) with STAR (Dobin et al., 2013), limiting the output to the uniquely-mapping reads only. The resulting bam files were sorted and indexed, and reads mapped in proper pairs (with SAM flag 0x2) were selected using samtools (Danecek et al., 2021).
 
 ```bash
@@ -85,6 +85,13 @@ $(basename $x fwd.fastq)rev.fastq \
 --outFileNamePrefix  $(basename $x fwd.fastq).
 done
 ```
+```bash
+for x in clean_*bam
+do
+samtools view -bh -f 0x2 $x $(basename $x bam)filtered.bam
+done
+```
+ 
 
 ### Step4 - de-duplication of aligned reads
 Duplicated reads were removed with UMI-Tools v1.1.4 (Smith et al., 2017).
