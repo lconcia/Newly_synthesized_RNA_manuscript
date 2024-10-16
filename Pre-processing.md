@@ -138,8 +138,7 @@ Reads mapping on multiple genes were assigned fractionally to each gene.
 for SAMPLE in *deduplicated.bam
 do
 htseq-count -f bam --order=pos --stranded=reverse -a 0 -t exon -i gene --nonunique=fraction --mode=union \
---counts_output=$(basename $SAMPLE deduplicated.bam)counts.tsv $SAMPLE
-Zm-B73-REFERENCE-NAM-5.0_genomic.with_scaffolds.EXONS.gff
+--counts_output=$(basename $SAMPLE deduplicated.bam)counts.tsv $SAMPLE Zm-B73-REFERENCE-NAM-5.0_genomic.with_scaffolds.EXONS.gff
 done
 ```
 
