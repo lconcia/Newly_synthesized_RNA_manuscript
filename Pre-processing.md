@@ -28,6 +28,7 @@ SRR19889575	| Cellular_BR2 | BR2_Primary_and_seminal_S8_L004_R1_001.fastq.gz | B
 SRR19889576	| Cellular_BR1 | BR1_Primary_and_seminal_S5_L004_R1_001.fastq.gz | BR1_Primary_and_seminal_S5_L004_R2_001.fastq.gz
 
 Raw data can be retrieved with fasterq-dump (https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump )
+
 For example:
 
 ```bash
@@ -107,8 +108,32 @@ umi_tools dedup -I $SAMPLE -S  $(basename $SAMPLE bam)deduplicated.bam --umi-sep
 done
 ```
 ### Step 5 - Read counts over annotated genes
-Raw read counts over exons were obtained using htseq-counts v. 2.0.3 (Putri et al., 2022) and the NCBI RefSeq v5 Zea mays release 103 gene annotation (https://www.ncbi.nlm.nih.gov/refseq/annotation_euk/Zea_mays/103/). Reads mapping on multiple genes were assigned fractionally to each gene. To determine the distribution of reads among introns, exons, intergenic space and junctions between these three, we ran htseq-counts using a custom annotation file modified to annotations of exons, introns and intergenic spaces. We applied the setting "--nonunique none" to report as "junctions" all the reads overlapping with more than one feature, such as adjacent introns and exons. 
+Raw read counts over exons were obtained using htseq-counts v. 2.0.3 (Putri et al., 2022) and the NCBI RefSeq v5 Zea mays release 103 gene annotation (https://www.ncbi.nlm.nih.gov/refseq/annotation_euk/Zea_mays/103/).
+```bash
+## retrieve the annotation from NCBI.
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/167/145/GCF_902167145.1_Zm-B73-REFERENCE-NAM-5.0/GCF_902167145.1_Zm-B73-REFERENCE-NAM-5.0_genomic.gff.gz
 
+## update the chromosome names.
+gunzip -c GCF_902167145.1_Zm-B73-REFERENCE-NAM-5.0_genomic.gff.gz | \
+sed  -e 's/NC_050096.1/chr1/g;' \
+     -e 's/NC_050097.1/chr2/g;' \
+     -e 's/NC_050098.1/chr3/g;' \
+     -e 's/NC_050099.1/chr4/g;' \
+     -e 's/NC_050100.1/chr5/g;' \
+     -e 's/NC_050101.1/chr6/g;' \
+     -e 's/NC_050102.1/chr7/g;' \
+     -e 's/NC_050103.1/chr8/g;' \
+     -e 's/NC_050104.1/chr9/g;' \
+     -e 's/NC_050105.1/chr10/g;' \
+     -e 's/NC_007982.1/chrM/g;' \
+     -e 's/NC_001666.2/chrC/g' | grep -v 'chrC\|chrM' >  \
+     Zm-B73-REFERENCE-NAM-5.0_genomic.with_scaffolds.gff
+
+## select the exons
+awk '{FS = "\t";OFS = "\t" ; if ($3=="exon") print $0}' Zm-B73-REFERENCE-NAM-5.0_genomic.with_scaffolds.gff > \
+Zm-B73-REFERENCE-NAM-5.0_genomic.with_scaffolds.EXONS.gff
+```
+Reads mapping on multiple genes were assigned fractionally to each gene.
 ```bash
 for SAMPLE in *deduplicated.bam
 do
