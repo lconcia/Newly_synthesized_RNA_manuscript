@@ -18,14 +18,15 @@ SRR24776108 | Nuclear_BR3 | BR3_EU_contol_S3_L004_R1_001.fastq.gz | BR3_EU_conto
 SRR24776107 | Nuclear_BR4 | BR4_EU_contol_S11_L004_R1_001.fastq.gz | BR4_EU_contol_S11_L004_R2_001.fastq.gz
 SRR24776106 | Nuclear_BR5 | BR5_EU_contol_S13_L004_R1_001.fastq.gz | BR5_EU_contol_S13_L004_R2_001.fastq.gz
 
-https://www.ncbi.nlm.nih.gov/bioproject/PRJNA853797
+https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1274978
 
 Accession  | Sample | Fw | Rv
 --- | --- | --- | --- 
-SRR19889573	| Cellular_BR4 | BR4_Primary_and_seminal_S20_L004_R1_001.fastq.gz | BR4_Primary_and_seminal_S20_L004_R2_001.fastq.gz
-SRR19889574	| Cellular_BR3 | BR3_Primary_and_seminal_S16_L004_R1_001.fastq.gz | BR3_Primary_and_seminal_S16_L004_R2_001.fastq.gz
-SRR19889575	| Cellular_BR2 | BR2_Primary_and_seminal_S8_L004_R1_001.fastq.gz | BR2_Primary_and_seminal_S8_L004_R2_001.fastq.gz
-SRR19889576	| Cellular_BR1 | BR1_Primary_and_seminal_S5_L004_R1_001.fastq.gz | BR1_Primary_and_seminal_S5_L004_R2_001.fastq.gz
+SRR33939182	| Cellular_BR1 | B73_BR1_2h_S5_L001_R1_001.fastq.gz | B73_BR1_2h_S5_L001_R2_001.fastq.gz
+SRR33939181	| Cellular_BR2 | B73_BR2_2h_S6_L001_R1_001.fastq.gz | B73_BR2_2h_S6_L001_R2_001.fastq.gz
+SRR33939180	| Cellular_BR3 | B73_BR3_2h_S7_L001_R1_001.fastq.gz | B73_BR3_2h_S7_L001_R2_001.fastq.gz
+SRR33939179	| Cellular_BR4 | B73_BR4_2h_S8_L001_R1_001.fastq.gz | B73_BR4_2h_S8_L001_R2_001.fastq.gz
+ 
 
 Raw data can be retrieved with fasterq-dump (https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump )
 
